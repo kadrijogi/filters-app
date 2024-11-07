@@ -1,27 +1,86 @@
 <div class="container mt-4">
-  <h1>Filters</h1>
+  <h3 class="mb-4">Filter List</h3>
+  <button class="btn btn-primary mb-3" (click)="openAddFilterModal()">Add Filter</button>
 
-  <!-- Display the filters -->
-  <div *ngFor="let filter of filters" class="card mt-3">
+  <!-- Filter list accordion (same as before) -->
+  <div *ngFor="let filter of filters; let i = index" class="card mb-3">
     <div class="card-header">
-      <h4>{{ filter.name }}</h4>
+      <h5 class="mb-0">
+        <button
+          class="btn btn-link"
+          type="button"
+          (click)="toggleAccordion(i)"
+          [attr.aria-controls]="'filterAccordion' + i"
+        >
+          {{ filter.name }}
+        </button>
+      </h5>
     </div>
-    <div class="card-body">
-      <h5>Criteria:</h5>
-      <div *ngFor="let criterion of filter.criteria">
-        <!-- Display AmountCriteria -->
-        <div *ngIf="criterion.criteriaType === 'AmountCriteria'">
-          <p><strong>Amount:</strong> {{ criterion.amount }} <strong>Comparison:</strong> {{ criterion.comparisonType }}</p>
-        </div>
 
-        <!-- Display TitleCriteria -->
-        <div *ngIf="criterion.criteriaType === 'TitleCriteria'">
-          <p><strong>Title:</strong> {{ criterion.title }} <strong>Comparison:</strong> {{ criterion.comparisonType }}</p>
-        </div>
+    <div [id]="'filterAccordion' + i" class="collapse" [class.show]="accordionState[i]">
+      <div class="card-body">
+        <h6>Filter Details:</h6>
+        <ul class="list-group">
+          <li *ngFor="let criterion of filter.criteria" class="list-group-item">
+            <strong>Type:</strong> {{ criterion.criteriaType }} <br />
+            <strong>Comparison:</strong> {{ criterion.comparisonType }} <br />
 
-        <!-- Display DateCriteria -->
-        <div *ngIf="criterion.criteriaType === 'DateCriteria'">
-          <p><strong>Date:</strong> {{ criterion.date }} <strong>Comparison:</strong> {{ criterion.comparisonType }}</p>
+            <div *ngIf="criterion.criteriaType === 'AmountCriteria'">
+              <strong>Amount:</strong> {{ criterion.amount }}
+            </div>
+            <div *ngIf="criterion.criteriaType === 'TitleCriteria'">
+              <strong>Title:</strong> {{ criterion.title }}
+            </div>
+            <div *ngIf="criterion.criteriaType === 'DateCriteria'">
+              <strong>Date:</strong> {{ criterion.date }}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Filter Modal -->
+  <div class="modal fade" id="addFilterModal" tabindex="-1" aria-labelledby="addFilterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addFilterModalLabel">Add New Filter</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="filterName" class="form-label">Filter Name</label>
+              <input type="text" class="form-control" id="filterName" [(ngModel)]="newFilter.name" name="filterName" />
+            </div>
+            <div class="mb-3">
+              <label for="criteriaType" class="form-label">Criteria Type</label>
+              <select class="form-select" id="criteriaType" [(ngModel)]="newCriterion.criteriaType" name="criteriaType">
+                <option value="AmountCriteria">Amount</option>
+                <option value="TitleCriteria">Title</option>
+                <option value="DateCriteria">Date</option>
+              </select>
+            </div>
+
+            <!-- Conditional fields based on selected criteria type -->
+            <div *ngIf="newCriterion.criteriaType === 'AmountCriteria'" class="mb-3">
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" class="form-control" id="amount" [(ngModel)]="newCriterion.amount" name="amount" />
+            </div>
+            <div *ngIf="newCriterion.criteriaType === 'TitleCriteria'" class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" [(ngModel)]="newCriterion.title" name="title" />
+            </div>
+            <div *ngIf="newCriterion.criteriaType === 'DateCriteria'" class="mb-3">
+              <label for="date" class="form-label">Date</label>
+              <input type="date" class="form-control" id="date" [(ngModel)]="newCriterion.date" name="date" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="addFilter()">Save Filter</button>
         </div>
       </div>
     </div>

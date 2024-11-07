@@ -22,7 +22,7 @@ export interface DateCriteria {
 export type Criteria = AmountCriteria | TitleCriteria | DateCriteria;
 
 export interface Filter {
-  id: number;
+  id?: number;
   name: string;
   criteria: Criteria[];
 }
