@@ -58,6 +58,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
 
   close() {
     if (this.modal) {
+      this.filterToEdit = { name: '', criteria: [] }
       this.modal.hide();
     }
   }
