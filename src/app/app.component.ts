@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {Criteria, Filter} from './data/schema/filter.model';
+import { Component, Inject, OnInit } from '@angular/core';
+import {AmountCriteria, Criteria, DateCriteria, Filter, TitleCriteria} from './data/schema/filter.model';
 import { FilterService } from './data/service/filter.service';
 import { Modal } from 'bootstrap';
 import { DOCUMENT } from '@angular/common';
@@ -14,6 +14,23 @@ export class AppComponent implements OnInit {
   accordionState: boolean[] = [];
   newFilter: Filter = { name: '', criteria: [] }; // Empty filter object for the form
   newCriterion: Partial<Criteria> = {}; // Empty criterion object for the form
+  comparisonTypeOptions: { [key: string]: { value: string, label: string }[] } = {
+    AmountCriteria: [
+      { value: 'GREATER_THAN', label: 'Greater Than' },
+      { value: 'LESS_THAN', label: 'Less Than' },
+      { value: 'EQUAL_TO', label: 'Equal To' }
+    ],
+    TitleCriteria: [
+      { value: 'STARTS_WITH', label: 'Starts With' },
+      { value: 'ENDS_WITH', label: 'Ends With' },
+      { value: 'CONTAINS', label: 'Contains' }
+    ],
+    DateCriteria: [
+      { value: 'GREATER_THAN', label: 'After' },
+      { value: 'LESS_THAN', label: 'Before' },
+      { value: 'EQUAL_TO', label: 'On' }
+    ]
+  };
 
   constructor(
     private filterService: FilterService,
@@ -42,23 +59,34 @@ export class AppComponent implements OnInit {
   }
 
   addFilter(): void {
-    if (this.newCriterion.criteriaType) {
-      // Add the current criterion to the new filter's criteria list
-      this.newFilter.criteria.push({ ...this.newCriterion as Criteria });
+    // Add the current criterion to the new filter's criteria list if valid
+    if (this.newCriterion.criteriaType === 'AmountCriteria' && this.newCriterion.amount !== undefined) {
+      this.newFilter.criteria.push(this.newCriterion as AmountCriteria);
+    } else if (this.newCriterion.criteriaType === 'TitleCriteria' && this.newCriterion.title !== undefined) {
+      this.newFilter.criteria.push(this.newCriterion as TitleCriteria);
+    } else if (this.newCriterion.criteriaType === 'DateCriteria' && this.newCriterion.date !== undefined) {
+      this.newFilter.criteria.push(this.newCriterion as DateCriteria);
     }
-    // Save the new filter (for demonstration, push it directly; you may want to send it to the backend)
-    this.filters.push({ ...this.newFilter });
-    this.accordionState.push(false); // Add accordion state for new filter
 
-    // Reset the form fields
-    this.newFilter = { name: '', criteria: [] };
-    this.newCriterion = {};
+    // Save the new filter via the backend
+    this.filterService.postFilter(this.newFilter).subscribe(
+      (savedFilter) => {
+        // Add the saved filter to the local list and reset the form
+        this.filters.push(savedFilter);
+        this.accordionState.push(false);
+        this.newFilter = { name: '', criteria: [] };
+        this.newCriterion = {};
 
-    // Close the modal
-    const anchor = this.document.getElementById('addFilterModal');
-    if (anchor) {
-      const modal = new Modal(anchor);
-      modal.hide();
-    }
+        // Close the modal
+        const anchor = this.document.getElementById('addFilterModal');
+        if (anchor) {
+          const modal = new Modal(anchor);
+          modal.hide();
+        }
+      },
+      (error) => {
+        console.error("Error saving filter:", error);
+      }
+    );
   }
 }

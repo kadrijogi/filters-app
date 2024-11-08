@@ -76,6 +76,23 @@
               <label for="date" class="form-label">Date</label>
               <input type="date" class="form-control" id="date" [(ngModel)]="newCriterion.date" name="date" />
             </div>
+            <!-- Comparison Type Selector -->
+            <div class="mb-3" *ngIf="newCriterion.criteriaType && comparisonTypeOptions[newCriterion.criteriaType]">
+              <label for="comparisonType" class="form-label">Comparison Type</label>
+              <select
+                class="form-select"
+                id="comparisonType"
+                [(ngModel)]="newCriterion.comparisonType"
+                name="comparisonType"
+              >
+                <option
+                  *ngFor="let option of comparisonTypeOptions[newCriterion.criteriaType]"
+                  [value]="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
           </form>
         </div>
         <div class="modal-footer">

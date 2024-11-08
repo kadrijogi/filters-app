@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import { Filter } from '../schema/filter.model';
 
@@ -19,5 +19,11 @@ export class FilterService {
         throw error;
       })
     );
+  }
+
+  postFilter(filter: Filter): Observable<Filter> {
+    console.log('FILTER: ',filter);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<Filter>(this.apiUrl, filter, { headers });
   }
 }
