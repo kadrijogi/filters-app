@@ -1,5 +1,6 @@
+<!-- Filter Modal (Bootstrap) -->
 <div class="modal fade" id="addFilterModal" tabindex="-1" aria-labelledby="addFilterModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addFilterModalLabel">Add New Filter</h5>
@@ -7,24 +8,71 @@
       </div>
       <div class="modal-body">
         <form>
-          <!-- Filter Name -->
+          <h6>Filter Name</h6>
           <div class="mb-3">
-            <label for="filterName" class="form-label">Filter Name</label>
             <input type="text" class="form-control" id="filterName" [(ngModel)]="filterToEdit.name" name="filterName" />
           </div>
-
+          <h6>Criteria</h6>
           <!-- Loop through each criterion in the filterToEdit.criteria array -->
-          <div *ngFor="let criterion of filterToEdit.criteria; let i = index">
-            <app-criterion
-              [criterion]="criterion"
-              [index]="i"
-              (removeCriterion)="removeCriterion(i)"
-              (criteriaTypeChange)="onCriteriaTypeChange(i)">
-            </app-criterion>
+          <div *ngFor="let criterion of filterToEdit.criteria; let i = index" class="border rounded p-3 mb-3">
+            <div class="row align-items-center">
+              <!-- Criteria Type -->
+              <div class="col">
+                <select
+                  class="form-select"
+                  id="criteriaType-{{ i }}"
+                  [(ngModel)]="criterion.criteriaType"
+                  [name]="'criteriaType' + i"
+                  (change)="onCriteriaTypeChange(i)"
+                >
+                  <option value="AmountCriteria">Amount</option>
+                  <option value="TitleCriteria">Title</option>
+                  <option value="DateCriteria">Date</option>
+                </select>
+              </div>
+
+              <!-- Comparison Type -->
+              <div class="col" *ngIf="criterion.criteriaType">
+                <select
+                  class="form-select"
+                  id="comparisonType-{{ i }}"
+                  [(ngModel)]="criterion.comparisonType"
+                  [name]="'comparisonType' + i"
+                >
+                  <option *ngFor="let option of comparisonTypeOptions[criterion.criteriaType]" [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Conditional fields based on selected criteria type -->
+              <div *ngIf="criterion.criteriaType === 'AmountCriteria'" class="col">
+                <input type="number" class="form-control" id="amount-{{ i }}" [(ngModel)]="criterion.amount" [name]="'amount' + i" />
+              </div>
+
+              <div *ngIf="criterion.criteriaType === 'TitleCriteria'" class="col">
+                <input type="text" class="form-control" id="title-{{ i }}" [(ngModel)]="criterion.title" [name]="'title' + i" />
+              </div>
+
+              <div *ngIf="criterion.criteriaType === 'DateCriteria'" class="col">
+                <input type="date" class="form-control" id="date-{{ i }}" [(ngModel)]="criterion.date" [name]="'date' + i" />
+              </div>
+
+              <div class="col-auto">
+                <!-- Remove Criterion Button -->
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm ms-auto"
+                  (click)="removeCriterion(i)"
+                  style="width: 30px; height: 30px; padding: 0; display: flex; justify-content: center; align-items: center;">
+                  <i class="fa fa-minus" style="font-size: 18px;"></i>
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Button to Add New Criterion -->
-          <button type="button" class="btn btn-secondary" (click)="addCriterion()">Add Criterion</button>
+          <button type="button" class="btn btn-secondary mt-3" (click)="addCriterion()">Add Criterion</button>
         </form>
       </div>
       <div class="modal-footer">
