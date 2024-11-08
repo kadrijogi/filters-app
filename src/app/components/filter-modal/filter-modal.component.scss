@@ -1,0 +1,14 @@
+/* Enable resizing on the modal-body */
+.modal-body {
+  resize: vertical;           /* Allows vertical resizing */
+  overflow-y: auto;             /* Enables scrolling when resized */
+  overflow-x: hidden;
+  min-height: 200px;          /* Set a minimum height to avoid collapsing */
+  max-height: 80vh;           /* Set a maximum height as needed */
+  padding: 1rem;              /* Ensure padding remains around content */
+}
+
+/* Optional: Add visual resize handle */
+.modal-content {
+  position: relative;
+}
