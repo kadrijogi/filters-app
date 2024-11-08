@@ -29,4 +29,10 @@ export class FilterService {
   deleteFilter(filterId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${filterId}`);
   }
+
+  updateFilter(filter: Filter): Observable<Filter> {
+    console.log('update filter')
+    return this.http.put<Filter>(`${this.apiUrl}/${filter.id}`, filter);
+  }
+
 }

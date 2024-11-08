@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   accordionState: boolean[] = [];
   newFilter: Filter = { name: '', criteria: [] };
   successMessage: string | null = null;
+  filterSuccessMessages: { [key: number]: string | null } = {};
 
   constructor(
     private filterService: FilterService,
@@ -75,5 +76,26 @@ export class AppComponent implements OnInit {
         }
       );
     }
+  }
+
+  // Handle the save from the individual filter component when editing
+  saveFilter(updatedFilter: Filter) {
+    this.filterService.updateFilter(updatedFilter).subscribe(
+      (updatedFilterFromServer) => {
+        // Find and update the filter in the array
+        const index = this.filters.findIndex((f) => f.id === updatedFilterFromServer.id);
+        if (index !== -1) {
+          this.filters[index] = updatedFilterFromServer; // Replace the old filter with the updated one
+        }
+
+        this.filterSuccessMessages[updatedFilterFromServer.id!] = 'Filter updated successfully!';
+        setTimeout(() => {
+          this.filterSuccessMessages[updatedFilterFromServer.id!] = null;
+        }, 5000);
+      },
+      (error) => {
+        console.error('Error updating filter:', error);
+      }
+    );
   }
 }

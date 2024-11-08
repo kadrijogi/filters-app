@@ -21,22 +21,85 @@
   <div [id]="'filterAccordion' + filter.id" class="collapse" [class.show]="accordionState">
     <div class="card-body">
       <h6>Filter Details:</h6>
-      <ul class="list-group">
-        <li *ngFor="let criterion of filter.criteria" class="list-group-item">
-          <strong>Type:</strong> {{ criterion.criteriaType }} <br />
-          <strong>Comparison:</strong> {{ criterion.comparisonType }} <br />
 
-          <div *ngIf="criterion.criteriaType === 'AmountCriteria'">
-            <strong>Amount:</strong> {{ criterion.amount }}
-          </div>
-          <div *ngIf="criterion.criteriaType === 'TitleCriteria'">
-            <strong>Title:</strong> {{ criterion.title }}
-          </div>
-          <div *ngIf="criterion.criteriaType === 'DateCriteria'">
-            <strong>Date:</strong> {{ criterion.date }}
-          </div>
-        </li>
-      </ul>
+      <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
+        {{ successMessage }}
+      </div>
+
+      <!-- Edit Form for Filter Criteria -->
+      <form>
+        <ul class="list-group">
+          <li *ngFor="let criterion of filter.criteria; let i = index" class="list-group-item">
+            <div class="mb-3">
+              <label for="criteriaType-{{ i }}" class="form-label">Type</label>
+              <select
+                class="form-select"
+                id="criteriaType-{{ i }}"
+                [(ngModel)]="criterion.criteriaType"
+                [name]="'criteriaType' + i"
+              >
+                <option value="AmountCriteria">Amount</option>
+                <option value="TitleCriteria">Title</option>
+                <option value="DateCriteria">Date</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="comparisonType-{{ i }}" class="form-label">Comparison</label>
+              <select
+                class="form-select"
+                id="comparisonType-{{ i }}"
+                [(ngModel)]="criterion.comparisonType"
+                [name]="'comparisonType' + i"
+              >
+                <option *ngFor="let option of comparisonTypeOptions[criterion.criteriaType]" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Conditional Fields Based on Criteria Type -->
+            <div *ngIf="criterion.criteriaType === 'AmountCriteria'" class="mb-3">
+              <label for="amount-{{ i }}" class="form-label">Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="amount-{{ i }}"
+                [(ngModel)]="criterion.amount"
+                [name]="'amount' + i"
+              />
+            </div>
+
+            <div *ngIf="criterion.criteriaType === 'TitleCriteria'" class="mb-3">
+              <label for="title-{{ i }}" class="form-label">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title-{{ i }}"
+                [(ngModel)]="criterion.title"
+                [name]="'title' + i"
+              />
+            </div>
+
+            <div *ngIf="criterion.criteriaType === 'DateCriteria'" class="mb-3">
+              <label for="date-{{ i }}" class="form-label">Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="date-{{ i }}"
+                [(ngModel)]="criterion.date"
+                [name]="'date' + i"
+              />
+            </div>
+          </li>
+        </ul>
+
+        <!-- Save and Close Buttons -->
+        <div class="mt-3">
+          <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="onClose()">Close</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, Inject } fro
 import { Modal } from 'bootstrap';
 import { DOCUMENT } from '@angular/common';
 import { Filter } from '../../data/schema/filter.model';
-import { Criterion } from '../../data/schema/filter.model';  // Import Criterion
-import { ComparisonOption } from "../../data/schema/comparison-type.model";
+import { comparisonTypeOptions } from "../../data/schema/comparison-type.model";
 
 @Component({
   selector: 'app-filter-modal',
@@ -16,23 +15,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   @Output() closeModal = new EventEmitter<void>();
 
   private modal: Modal | undefined;
-  comparisonTypeOptions: { [key: string]: ComparisonOption[] } = {
-    AmountCriteria: [
-      { value: "GREATER_THAN", label: "Greater Than" },
-      { value: "LESS_THAN", label: "Less Than" },
-      { value: "EQUAL_TO", label: "Equal To" }
-    ],
-    TitleCriteria: [
-      { value: "STARTS_WITH", label: "Starts With" },
-      { value: "ENDS_WITH", label: "Ends With" },
-      { value: "CONTAINS", label: "Contains" }
-    ],
-    DateCriteria: [
-      { value: "GREATER_THAN", label: "After" },
-      { value: "LESS_THAN", label: "Before" },
-      { value: "EQUAL_TO", label: "On" }
-    ]
-  };
+  comparisonTypeOptions = comparisonTypeOptions;
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
