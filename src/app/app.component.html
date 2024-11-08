@@ -7,48 +7,13 @@
   <h3 class="mb-4">Filter List</h3>
   <button class="btn btn-primary mb-3" (click)="openAddFilterModal()">Add Filter</button>
 
-  <!-- Filter list accordion -->
-  <div *ngFor="let filter of filters; let i = index" class="card mb-3">
-    <div class="card-header">
-      <h5 class="mb-0">
-        <button
-          class="btn btn-link"
-          type="button"
-          (click)="toggleAccordion(i)"
-          [attr.aria-controls]="'filterAccordion' + i"
-        >
-          {{ filter.name }}
-        </button>
-        <!-- Delete Button -->
-        <button
-          class="btn btn-danger btn-sm float-end"
-          (click)="deleteFilter(filter.id!)">
-          Delete
-        </button>
-      </h5>
-    </div>
-
-    <div [id]="'filterAccordion' + i" class="collapse" [class.show]="accordionState[i]">
-      <div class="card-body">
-        <h6>Filter Details:</h6>
-        <ul class="list-group">
-          <li *ngFor="let criterion of filter.criteria" class="list-group-item">
-            <strong>Type:</strong> {{ criterion.criteriaType }} <br />
-            <strong>Comparison:</strong> {{ criterion.comparisonType }} <br />
-
-            <div *ngIf="criterion.criteriaType === 'AmountCriteria'">
-              <strong>Amount:</strong> {{ criterion.amount }}
-            </div>
-            <div *ngIf="criterion.criteriaType === 'TitleCriteria'">
-              <strong>Title:</strong> {{ criterion.title }}
-            </div>
-            <div *ngIf="criterion.criteriaType === 'DateCriteria'">
-              <strong>Date:</strong> {{ criterion.date }}
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <div *ngFor="let filter of filters; let i = index">
+    <app-filter
+      [filter]="filter"
+      [accordionState]="accordionState[i]"
+      (toggleAccordion)="toggleAccordion(i)"
+      (delete)="deleteFilter($event)">
+    </app-filter>
   </div>
 
   <!-- Add Filter Modal -->

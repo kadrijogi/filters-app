@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AmountCriteria, Criteria, DateCriteria, Filter, TitleCriteria } from './data/schema/filter.model';
+import { AmountCriteria, Criterion, DateCriteria, Filter, TitleCriteria } from './data/schema/filter.model';
 import { FilterService } from './data/service/filter.service';
 import { Modal } from 'bootstrap';
 import { DOCUMENT } from '@angular/common';
@@ -50,10 +50,14 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
   ) {}
 
-  ngOnInit(): void {
-    this.filterService.getFilters().subscribe((filters: Filter[]) => {
+  ngOnInit() {
+    this.loadFilters();
+  }
+
+  loadFilters() {
+    this.filterService.getFilters().subscribe(filters => {
       this.filters = filters;
-      this.accordionState = Array(filters.length).fill(false);
+      this.accordionState = new Array(filters.length).fill(false);  // Initialize accordion states
     });
   }
 

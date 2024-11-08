@@ -19,10 +19,10 @@ export interface DateCriteria {
   comparisonType: 'GREATER_THAN' | 'LESS_THAN' | 'EQUAL_TO';
 }
 
-export type Criteria = AmountCriteria | TitleCriteria | DateCriteria;
+export type Criterion = AmountCriteria | TitleCriteria | DateCriteria;
 
 export interface Filter {
   id?: number;
   name: string;
-  criteria: Criteria[];
+  criteria: Criterion[];
 }
