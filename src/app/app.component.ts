@@ -118,6 +118,23 @@ export class AppComponent implements OnInit {
     );
   }
 
+  // Method to delete a filter
+  deleteFilter(filterId: number): void {
+    if (confirm('Are you sure you want to delete this filter?')) {
+      this.filterService.deleteFilter(filterId).subscribe(
+        () => {
+          // Remove the filter from the local list
+          this.filters = this.filters.filter(filter => filter.id !== filterId);
+          this.successMessage = 'Filter deleted successfully!';
+          setTimeout(() => this.successMessage = null, 3000);
+        },
+        (error) => {
+          console.error("Error deleting filter:", error);
+        }
+      );
+    }
+  }
+
   closeAddFilterModal() {
     const anchor = this.document.getElementById('addFilterModal');
     if (anchor) {

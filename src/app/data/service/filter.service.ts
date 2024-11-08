@@ -25,4 +25,8 @@ export class FilterService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<Filter>(this.apiUrl, filter, { headers });
   }
+
+  deleteFilter(filterId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${filterId}`);
+  }
 }
