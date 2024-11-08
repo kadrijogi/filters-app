@@ -1,3 +1,8 @@
+<!-- Success Message -->
+<div *ngIf="successMessage" class="alert alert-success text-center" role="alert">
+  {{ successMessage }}
+</div>
+
 <div class="container mt-4">
   <h3 class="mb-4">Filter List</h3>
   <button class="btn btn-primary mb-3" (click)="openAddFilterModal()">Add Filter</button>
@@ -46,7 +51,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addFilterModalLabel">Add New Filter</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" (click)="closeAddFilterModal()" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
@@ -116,7 +121,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary" (click)="closeAddFilterModal()">Cancel</button>
           <button type="button" class="btn btn-primary" (click)="addFilter()">Save Filter</button>
         </div>
       </div>

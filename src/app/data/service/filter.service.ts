@@ -22,7 +22,6 @@ export class FilterService {
   }
 
   postFilter(filter: Filter): Observable<Filter> {
-    console.log('FILTER: ',filter);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<Filter>(this.apiUrl, filter, { headers });
   }

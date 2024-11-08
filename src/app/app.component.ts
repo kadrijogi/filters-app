@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   filters: Filter[] = [];
   accordionState: boolean[] = [];
   newFilter: Filter = { name: '', criteria: [] }; // Filter object for the form with an empty criteria array
+  successMessage: string | null = null;
   comparisonTypeOptions: { [key: string]: ComparisonOption[] } = {
     AmountCriteria: [
       { value: "GREATER_THAN", label: "Greater Than" },
@@ -101,18 +102,27 @@ export class AppComponent implements OnInit {
         // Update local state with the saved filter and reset the form
         this.filters.push(savedFilter);
         this.accordionState.push(false);
+
+        // Show success message
+        this.successMessage = 'Filter saved successfully!';
+        setTimeout(() => this.successMessage = null, 5000);
+
         this.newFilter = { name: '', criteria: [] };
 
         // Close the modal
-        const anchor = this.document.getElementById('addFilterModal');
-        if (anchor) {
-          const modal = new Modal(anchor);
-          modal.hide();
-        }
+        this.closeAddFilterModal();
       },
       (error) => {
         console.error("Error saving filter:", error);
       }
     );
+  }
+
+  closeAddFilterModal() {
+    const anchor = this.document.getElementById('addFilterModal');
+    if (anchor) {
+      const modal = Modal.getInstance(anchor);
+      modal?.hide(); // Close the modal using Bootstrap's Modal API
+    }
   }
 }
