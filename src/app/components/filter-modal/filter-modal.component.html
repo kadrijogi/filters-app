@@ -62,17 +62,16 @@
               <div class="col-md-1 my-1 align-self-center">
                 <button
                   type="button"
-                  class="btn btn-danger btn-sm ms-auto"
-                  (click)="removeCriterion(i)"
-                  style="width: 30px; height: 30px; padding: 0; display: flex; justify-content: center; align-items: center;">
-                  <i class="fa fa-minus" style="font-size: 18px;"></i>
+                  class="btn btn-danger btn-sm ms-auto btn-icon-minus float-end"
+                  (click)="removeCriterion(i)">
+                  <i class="fa fa-minus"></i>
                 </button>
               </div>
             </div>
           </div>
 
           <!-- Button to Add New Criterion -->
-          <button type="button" class="btn btn-secondary mt-3" (click)="addCriterion()">Add Criterion</button>
+          <button type="button" class="btn btn-secondary mt-3" (click)="addCriterion()"><i class="fa-solid fa-plus"></i> Add Criterion</button>
         </form>
       </div>
       <div class="modal-footer">
