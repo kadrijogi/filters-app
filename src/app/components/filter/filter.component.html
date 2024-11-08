@@ -11,7 +11,7 @@
       </button>
       <!-- Delete Button -->
       <button
-        class="btn btn-danger btn-sm float-end btn-icon-minus ms-auto btn-icon-minus mt-1"
+        class="btn btn-danger btn-sm float-end btn-icon-minus ms-auto mt-1"
         (click)="onDelete()">
         <i class="fa fa-minus"></i>
       </button>
@@ -19,7 +19,12 @@
   </div>
 
   <div [id]="'filterAccordion' + filter.id" class="collapse" [class.show]="accordionState">
-    <div class="card-body">
+    <div class="card-body" *ngIf="!editMode">
+
+      <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
+        {{ successMessage }}
+      </div>
+
       <h6>Criteria:</h6>
       <ul class="list-group">
         <li *ngFor="let criterion of filter.criteria" class="list-group-item">
@@ -58,6 +63,98 @@
           </div>
         </li>
       </ul>
+      <button
+        class="btn btn-warning my-3 float-end"
+        (click)="onEdit()">
+        Edit
+      </button>
+    </div>
+
+    <div class="card-body" *ngIf="editMode">
+      <h6>Filter Details:</h6>
+
+      <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
+        {{ successMessage }}
+      </div>
+
+      <!-- Edit Form for Filter Criteria -->
+      <form>
+        <div *ngFor="let criterion of filter.criteria; let i = index">
+          <div class="row mb-1">
+            <div class="row col-md-11 align-items-center">
+              <div class="col-md-4 mb-1">
+                <select
+                  class="form-select"
+                  id="criteriaType-{{ i }}"
+                  [(ngModel)]="criterion.criteriaType"
+                  [name]="'criteriaType' + i"
+                >
+                  <option value="AmountCriteria">Amount</option>
+                  <option value="TitleCriteria">Title</option>
+                  <option value="DateCriteria">Date</option>
+                </select>
+              </div>
+
+              <div class="col-md-4 mb-1">
+                <select
+                  class="form-select"
+                  id="comparisonType-{{ i }}"
+                  [(ngModel)]="criterion.comparisonType"
+                  [name]="'comparisonType' + i"
+                >
+                  <option *ngFor="let option of comparisonTypeOptions[criterion.criteriaType]" [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Conditional Fields Based on Criteria Type -->
+              <div *ngIf="criterion.criteriaType === 'AmountCriteria'" class="col-md-4 mb-1">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="amount-{{ i }}"
+                  [(ngModel)]="criterion.amount"
+                  [name]="'amount' + i"
+                />
+              </div>
+
+              <div *ngIf="criterion.criteriaType === 'TitleCriteria'" class="col-md-4 mb-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title-{{ i }}"
+                  [(ngModel)]="criterion.title"
+                  [name]="'title' + i"
+                />
+              </div>
+
+              <div *ngIf="criterion.criteriaType === 'DateCriteria'" class="col-md-4 mb-1">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="date-{{ i }}"
+                  [(ngModel)]="criterion.date"
+                  [name]="'date' + i"
+                />
+              </div>
+            </div>
+            <div class="col-md-1 my-1">
+              <button
+                type="button"
+                class="btn btn-danger btn-sm ms-auto btn-icon-minus float-end"
+                (click)="removeCriterion(i)">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- Save and Close Buttons -->
+      <div class="mt-3 modal-footer">
+        <button type="button" class="btn btn-secondary m-1" (click)="onClose()">Cancel</button>
+        <button type="button" class="btn btn-primary m-1" (click)="onSave()">Save</button>
+      </div>
     </div>
   </div>
 </div>
