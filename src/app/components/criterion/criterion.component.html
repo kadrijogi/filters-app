@@ -1,0 +1,53 @@
+<div class="border rounded p-3 mb-3">
+  <h6>Criterion {{ index + 1 }}</h6>
+
+  <!-- Criteria Type -->
+  <div class="mb-3">
+    <label for="criteriaType-{{ index }}" class="form-label">Criteria Type</label>
+    <select
+      class="form-select"
+      id="criteriaType-{{ index }}"
+      [(ngModel)]="criterion.criteriaType"
+      [name]="'criteriaType' + index"
+      (change)="onCriteriaTypeChange()"
+    >
+      <option value="AmountCriteria">Amount</option>
+      <option value="TitleCriteria">Title</option>
+      <option value="DateCriteria">Date</option>
+    </select>
+  </div>
+
+  <!-- Conditional fields based on selected criteria type -->
+  <div *ngIf="criterion.criteriaType === 'AmountCriteria'" class="mb-3">
+    <label for="amount-{{ index }}" class="form-label">Amount</label>
+    <input type="number" class="form-control" id="amount-{{ index }}" [(ngModel)]="criterion.amount" [name]="'amount' + index" />
+  </div>
+
+  <div *ngIf="criterion.criteriaType === 'TitleCriteria'" class="mb-3">
+    <label for="title-{{ index }}" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title-{{ index }}" [(ngModel)]="criterion.title" [name]="'title' + index" />
+  </div>
+
+  <div *ngIf="criterion.criteriaType === 'DateCriteria'" class="mb-3">
+    <label for="date-{{ index }}" class="form-label">Date</label>
+    <input type="date" class="form-control" id="date-{{ index }}" [(ngModel)]="criterion.date" [name]="'date' + index" />
+  </div>
+
+  <!-- Comparison Type -->
+  <div class="mb-3" *ngIf="criterion.criteriaType && comparisonTypeOptions[criterion.criteriaType]">
+    <label for="comparisonType-{{ index }}" class="form-label">Comparison Type</label>
+    <select
+      class="form-select"
+      id="comparisonType-{{ index }}"
+      [(ngModel)]="criterion.comparisonType"
+      [name]="'comparisonType' + index"
+    >
+      <option *ngFor="let option of comparisonTypeOptions[criterion.criteriaType]" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Remove Criterion Button -->
+  <button type="button" class="btn btn-danger btn-sm mt-2" (click)="remove()">Remove Criterion</button>
+</div>

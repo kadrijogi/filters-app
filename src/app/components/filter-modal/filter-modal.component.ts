@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, Inject } fro
 import { Modal } from 'bootstrap';
 import { DOCUMENT } from '@angular/common';
 import { Filter } from '../../data/schema/filter.model';
+import { Criterion } from '../../data/schema/filter.model';  // Import Criterion
 import { ComparisonOption } from "../../data/schema/comparison-type.model";
 
 @Component({
@@ -60,6 +61,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
       comparisonType: 'GREATER_THAN'
     });
   }
+
   removeCriterion(index: number) {
     this.filterToEdit.criteria.splice(index, 1);
   }
