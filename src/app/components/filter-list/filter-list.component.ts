@@ -3,11 +3,11 @@ import { Filter } from '../../data/schema/filter.model';
 import { comparisonTypeOptions } from '../../data/schema/comparison-type.model';
 
 @Component({
-  selector: 'app-filter',
-  templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  selector: 'app-filter-list',
+  templateUrl: './filter-list.component.html',
+  styleUrls: ['./filter-list.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterListComponent implements OnInit {
   @Input() filter!: Filter;
   @Input() accordionState: boolean = false;
   @Input() successMessage: string | null = null;

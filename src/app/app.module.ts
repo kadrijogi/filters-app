@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import {HttpClientModule} from "@angular/common/http";
-import { FilterComponent } from './components/filter/filter.component';
+import { FilterListComponent } from './components/filter-list/filter-list.component';
 import { FilterModalComponent } from './components/filter-modal/filter-modal.component';
 import { CriterionComponent } from './components/criterion/criterion.component';
 import { FilterFormComponent } from './components/filter-form/filter-form.component';
@@ -13,7 +13,7 @@ import { FilterFormComponent } from './components/filter-form/filter-form.compon
 @NgModule({
   declarations: [
     AppComponent,
-    FilterComponent,
+    FilterListComponent,
     FilterModalComponent,
     CriterionComponent,
     FilterFormComponent

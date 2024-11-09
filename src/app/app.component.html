@@ -8,14 +8,14 @@
   <button class="btn btn-primary mb-3" (click)="openAddFilterModal()">Add Filter</button>
 
   <div *ngFor="let filter of filters; let i = index">
-    <app-filter
+    <app-filter-list
       [filter]="filter"
       [accordionState]="accordionState[i]"
       [successMessage]="filterSuccessMessages[filter.id!]"
       (toggleAccordion)="toggleAccordion(i)"
       (delete)="deleteFilter($event)"
       (saveFilter)="saveFilter($event)">
-    </app-filter>
+    </app-filter-list>
   </div>
 
   <app-filter-modal
