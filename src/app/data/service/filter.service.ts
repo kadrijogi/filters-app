@@ -8,7 +8,7 @@ import { Filter } from '../schema/filter.model';
 })
 export class FilterService {
 
-  private apiUrl = 'http://localhost:8080/filters/user/1';
+  private apiUrl = 'https://filter-backend-fe38b2874782.herokuapp.com/filters/user/1';
 
   constructor(private http: HttpClient) { }
 
