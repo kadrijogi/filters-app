@@ -11,3 +11,7 @@
 .mr-2 {
   margin-right: 0.5rem
 }
+
+.criteria-form:has(.error-placeholder) .form-select {
+  margin-bottom: 1.5rem;
+}
