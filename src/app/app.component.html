@@ -20,7 +20,7 @@
 
 
   <button class="btn btn-primary mb-3" (click)="isModalMode ? openAddFilterModal() : toggleInlineAddFilterAccordion()">
-    Add Filter
+    <i class="fa-solid fa-plus"></i> Add Filter
   </button>
 
   <div *ngIf="!isModalMode && this.accordionState[-1]">

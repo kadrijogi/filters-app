@@ -9,11 +9,19 @@
       >
         {{ filter.name }}
       </button>
-      <!-- Delete Button -->
-      <button
-        class="btn btn-danger btn-sm float-end btn-icon-minus ms-auto mt-1"
-        (click)="onDelete()">
+      <button *ngIf="!accordionState"
+        class="btn btn-outline-danger btn-sm float-end btn-icon-minus ms-auto mt-1"
+        (click)="onDelete()"
+        aria-label="Delete"
+        title="Delete">
         <i class="fa fa-minus"></i>
+      </button>
+      <button *ngIf="accordionState"
+        class="btn-close btn-sm float-end mt-1"
+        (click)="onToggleAccordion()"
+        type="button"
+        aria-label="Close"
+        title="Close">
       </button>
     </h5>
   </div>
@@ -64,7 +72,12 @@
         </li>
       </ul>
       <button
-        class="btn btn-warning my-3 float-end"
+        class="btn btn-outline-danger my-3 m-1 float-end"
+        (click)="onDelete()">
+        Delete
+      </button>
+      <button
+        class="btn btn-secondary my-3 m-1 float-end"
         (click)="onEdit()">
         Edit
       </button>
@@ -143,7 +156,7 @@
             <div class="col-md-1 my-1">
               <button
                 type="button"
-                class="btn btn-danger btn-sm ms-auto btn-icon-minus float-end"
+                class="btn btn-outline-danger btn-sm ms-auto btn-icon-minus float-end"
                 (click)="removeCriterion(i)">
                 <i class="fa fa-minus"></i>
               </button>
