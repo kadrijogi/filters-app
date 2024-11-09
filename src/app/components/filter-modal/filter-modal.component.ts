@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, Inject } fro
 import { Modal } from 'bootstrap';
 import { DOCUMENT } from '@angular/common';
 import { Filter } from '../../data/schema/filter.model';
-import { comparisonTypeOptions } from "../../data/schema/comparison-type.model";
 
 @Component({
   selector: 'app-filter-modal',
@@ -15,7 +14,6 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   @Output() closeModal = new EventEmitter<void>();
 
   private modal: Modal | undefined;
-  comparisonTypeOptions = comparisonTypeOptions;
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
@@ -38,32 +36,10 @@ export class FilterModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  addCriterion() {
-    this.filterToEdit.criteria.push({
-      criteriaType: 'AmountCriteria',
-      comparisonType: 'GREATER_THAN'
-    });
-  }
-
-  removeCriterion(index: number) {
-    this.filterToEdit.criteria.splice(index, 1);
-  }
-
-  onCriteriaTypeChange(index: number) {
-    const criterion = this.filterToEdit.criteria[index];
-    if (criterion.criteriaType) {
-      criterion.comparisonType = this.comparisonTypeOptions[criterion.criteriaType][0].value;
-    }
-  }
-
   close() {
     if (this.modal) {
+      this.filterToEdit = { name: '', criteria: [] }
       this.modal.hide();
     }
-  }
-
-  save() {
-    this.saveFilter.emit(this.filterToEdit);
-    this.close();
   }
 }
