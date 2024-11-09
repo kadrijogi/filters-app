@@ -1,4 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-family: Helvetica, sans-serif!important;
+  letter-spacing: 0.075em;
+}
+
+.btn
+{
+  font-family: Roboto, sans-serif!important;
+  letter-spacing: 0.075em;;
+}
+
+.btn-link {
+  font-weight: normal!important;
+}
+
 .btn-icon-minus {
   width: 30px;
   height: 30px;
