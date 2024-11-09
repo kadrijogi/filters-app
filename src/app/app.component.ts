@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
   newFilter: Filter = { name: '', criteria: [] };
   successMessage: string | null = null;
   filterSuccessMessages: { [key: number]: string | null } = {};
+  modalMode: string = 'modal';
+  isModalMode: boolean = true;
 
   constructor(
     private filterService: FilterService,
@@ -33,6 +35,14 @@ export class AppComponent implements OnInit {
 
   toggleAccordion(index: number): void {
     this.accordionState[index] = !this.accordionState[index];
+  }
+
+  toggleInlineAddFilterAccordion(): void {
+    this.accordionState[-1] = !this.accordionState[-1];
+  }
+  // This method is triggered when the radio button selection changes
+  onModeChange(mode: string) {
+    this.isModalMode = this.modalMode === 'modal';
   }
 
   openAddFilterModal() {
