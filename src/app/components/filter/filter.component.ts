@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import { Filter } from '../../data/schema/filter.model';
 import { comparisonTypeOptions } from '../../data/schema/comparison-type.model';
 
@@ -7,7 +7,7 @@ import { comparisonTypeOptions } from '../../data/schema/comparison-type.model';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent {
+export class FilterComponent implements OnInit {
   @Input() filter!: Filter;
   @Input() accordionState: boolean = false;
   @Input() successMessage: string | null = null;
@@ -19,6 +19,10 @@ export class FilterComponent {
   editMode: boolean = false;
   originalFilter!: Filter;
   comparisonTypeOptions = comparisonTypeOptions;
+
+  ngOnInit() {
+    this.originalFilter = JSON.parse(JSON.stringify(this.filter));
+  }
 
   // Handle accordion toggle
   onToggleAccordion() {
@@ -46,7 +50,6 @@ export class FilterComponent {
   onClose() {
     this.editMode = false;
     this.resetFilterFields();
-    //this.toggleAccordion.emit(); // Optionally close the accordion
   }
 
   private resetFilterFields(): void {
@@ -54,15 +57,21 @@ export class FilterComponent {
     this.filter.criteria = JSON.parse(JSON.stringify(this.originalFilter.criteria));
   }
 
-  addCriterion(): void {
-    // Logic to add a new criterion to filterToEdit.criteria
+  addCriterion() {
+    this.filter.criteria.push({
+      criteriaType: 'AmountCriteria',
+      comparisonType: 'GREATER_THAN'
+    });
   }
 
-  removeCriterion(index: number): void {
-    // Logic to remove criterion at specified index
+  removeCriterion(index: number) {
+    this.filter.criteria.splice(index, 1);
   }
 
-  onCriteriaTypeChange(index: number): void {
-    // Logic to handle criteria type change for criterion at specified index
+  onCriteriaTypeChange(index: number) {
+    const criterion = this.filter.criteria[index];
+    if (criterion.criteriaType) {
+      criterion.comparisonType = this.comparisonTypeOptions[criterion.criteriaType][0].value;
+    }
   }
 }

@@ -70,14 +70,14 @@
       </button>
     </div>
 
+    <!-- Edit Form for Filter Criteria -->
     <div class="card-body" *ngIf="editMode">
-      <h6>Filter Details:</h6>
+      <h6>Criteria:</h6>
 
       <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
         {{ successMessage }}
       </div>
 
-      <!-- Edit Form for Filter Criteria -->
       <form>
         <div *ngFor="let criterion of filter.criteria; let i = index">
           <div class="row mb-1">
@@ -88,6 +88,7 @@
                   id="criteriaType-{{ i }}"
                   [(ngModel)]="criterion.criteriaType"
                   [name]="'criteriaType' + i"
+                  (change)="onCriteriaTypeChange(i)"
                 >
                   <option value="AmountCriteria">Amount</option>
                   <option value="TitleCriteria">Title</option>
@@ -149,6 +150,8 @@
             </div>
           </div>
         </div>
+        <!-- Button to Add New Criterion -->
+        <button type="button" class="btn btn-secondary mt-3" (click)="addCriterion()"><i class="fa-solid fa-plus"></i> Add Criterion</button>
       </form>
       <!-- Save and Close Buttons -->
       <div class="mt-3 modal-footer">
